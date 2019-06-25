@@ -6,10 +6,12 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 # import xlwt
 import logging
+import time
 
 import openpyxl
 from openpyxl import Workbook
 
+from get_types import get_shops
 from search_food.items import ShopItem, TypeItem, DbTypeItem
 import os
 
@@ -18,6 +20,10 @@ class DbPipeline(object):
 
     def __init__(self):
         print("-------start--------")
+        self.f = open("tmp.txt", "w+")
+        self.f.write("1")
+        self.f.seek(0)
+        self.f.close()
 
     def process_item(self, item, spider):
         # logging.debug(type(item))
@@ -28,3 +34,7 @@ class DbPipeline(object):
 
     def close_spider(self, spider):
         print("-------close_spider--------")
+        self.f = open("tmp.txt", "w+")
+        self.f.write("0")
+        self.f.seek(0)
+        self.f.close()

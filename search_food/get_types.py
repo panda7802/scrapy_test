@@ -2,8 +2,11 @@
 
 from __future__ import absolute_import
 
+import logging
 import os
 import sys
+import time
+import urllib
 
 import django
 from scrapy import cmdline
@@ -29,6 +32,25 @@ def get_lists():
     print("-----------")
 
 
+def get_shops():
+    """
+    获取类型列表和商店列表
+    :return:
+    """
+    f1 = open("tmp.txt", "w+")
+    from dzdp.models import DzdpShop
+    # 是否有需要爬的数据
+    tmp_shop = DzdpShop.objects.filter(pic__lt=0).first()
+    if tmp_shop is not None:
+        f1.close()
+        args = "scrapy crawl get_shop2db".split()
+        cmdline.execute(args)
+        print("-----------")
+    else:
+        f1.write("2")
+    f1.close()
+
+
 if __name__ == '__main__':
     DJANGO_PROJECT_PATH = '../../lxdzx_server'
     DJANGO_SETTINGS_MODULE = 'lxdzx_server.settings'
@@ -40,13 +62,5 @@ if __name__ == '__main__':
     django.setup()
 
     # get_types()
-    get_lists()
-    # from dzdp.models import DzdpCity, DzdpType, DzdpCityType
-    # need_get_cities = DzdpCity.objects.filter(is_need=True)
-    # need_get_types = DzdpType.objects.filter(is_need=True)
-    # # 找到需要爬的城市类型
-    # city_types = DzdpCityType.objects. \
-    #     filter(Q(city__in=need_get_cities) & Q(type__parent_type__in=need_get_types))
-    # for item in city_types:
-    #     print(item)
-    # print("%d , %d" % (len(need_get_cities), len(need_get_types)))
+    # get_lists()
+    get_shops()

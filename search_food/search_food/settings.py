@@ -34,6 +34,8 @@ ROBOTSTXT_OBEY = True
 
 # Disable cookies (enabled by default)
 # COOKIES_ENABLED = False
+COOKIES_ENABLED = True
+ROBOTSTXT_OBEY = False
 
 # Disable Telnet Console (enabled by default)
 # TELNETCONSOLE_ENABLED = False
@@ -96,9 +98,9 @@ ITEM_PIPELINES = {
 # LOG_FILE = "dzdp.log"
 # LOG_LEVEL = "DEBUG"
 
-USER_AGENT = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0"
+# USER_AGENT = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0"
 
-HTTPERROR_ALLOWED_CODES = [304]
+HTTPERROR_ALLOWED_CODES = [304, 403]
 
 logger = logging.getLogger()  # 不加名称设置root logger
 logger.setLevel(logging.DEBUG)
