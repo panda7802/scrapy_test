@@ -10,20 +10,20 @@ from dzdp.models import DzdpCity, DzdpType, DzdpCityType
 from search_food.items import DbTypeItem, DbTypeCityItem
 
 uas = ['Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
-       # 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0',
-       # 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.163 Safari/535.1',
-       # 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:6.0) Gecko/20100101 Firefox/6.0',
-       # 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50',
-       # 'Opera/9.80 (Windows NT 6.1; U; zh-cn) Presto/2.9.168 Version/11.50',
-       # 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0; .NET CLR 2.0.50727; SLCC2; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; Tablet PC 2.0; .NET4.0E)',
-       # 'Mozilla/5.0 (Windows; U; Windows NT 6.1; ) AppleWebKit/534.12 (KHTML, like Gecko) Maxthon/3.0 Safari/534.12',
-       # 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)',
-       # 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E; SE 2.X MetaSr 1.0)',
-       # 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.3 (KHTML, like Gecko) Chrome/6.0.472.33 Safari/534.3 SE 2.X MetaSr 1.0',
-       # 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)',
-       # 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.41 Safari/535.1 QQBrowser/6.9.11079.201',
-       # 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E) QQBrowser/6.9.11079.201',
-       # 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0'
+       'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0',
+       'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.163 Safari/535.1',
+       'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:6.0) Gecko/20100101 Firefox/6.0',
+       'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50',
+       'Opera/9.80 (Windows NT 6.1; U; zh-cn) Presto/2.9.168 Version/11.50',
+       'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0; .NET CLR 2.0.50727; SLCC2; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; Tablet PC 2.0; .NET4.0E)',
+       'Mozilla/5.0 (Windows; U; Windows NT 6.1; ) AppleWebKit/534.12 (KHTML, like Gecko) Maxthon/3.0 Safari/534.12',
+       'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)',
+       'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E; SE 2.X MetaSr 1.0)',
+       'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.3 (KHTML, like Gecko) Chrome/6.0.472.33 Safari/534.3 SE 2.X MetaSr 1.0',
+       'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)',
+       'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.41 Safari/535.1 QQBrowser/6.9.11079.201',
+       'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E) QQBrowser/6.9.11079.201',
+       'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0'
        ]
 
 def_headers = {
@@ -41,38 +41,26 @@ def_headers = {
     'Cache-Control': 'max-age=0'
 }
 
-# def_cookie = {
-#     '__mta': '142037261.1560844813116.1560844813116.1560844813116.1',
-#     'cy': '5',
-#     'cye': 'nanjing',
-#     '_lxsdk_cuid': '16b1afa8f30c8-0d5154320b3f228-70226752-13c680-16b1afa8f31c8',
-#     '_lxsdk': '16b1afa8f30c8-0d5154320b3f228-70226752-13c680-16b1afa8f31c8',
-#     '_hc.v': 'd2bf0bc8-ef22-e77a-8572-7fdd38678f60.1559525758',
-#     's_ViewType': '10',
-#     'hibext_instdsigdipv2': '1',
-#     'aburl': '1',
-#     '_lx_utm': 'utm_source%3DBaidu%26utm_medium%3Dorganic',
-#     '_lxsdk_s': '16b8c61cc3a-668-fd3-248%7C%7C1'
-# }
-
 def_cookie = {
-    '__mta': '175953437.1560910520429.1560910520429.1560910520429.1',
-    '_lxsdk_cuid': '16b6331f8f2c8-0c1f6f4f627745-3f72045a-13c680-16b6331f8f2c8',
-    '_lxsdk': '16b6331f8f2c8-0c1f6f4f627745-3f72045a-13c680-16b6331f8f2c8',
-    '_hc.v': 'd617e219-a24c-1cf0-a6ef-377a301b4684.1560737348',
     's_ViewType': '10',
-    'ua': 'panda7803',
-    'ctu': '064b3edffd929d01cda19e8ac7dc8e549e9414ad84f3859a8b955ed2243852f6',
-    'cy': '6',
-    'cye': 'suzhou',
-    'aburl': '1',
-    '_lx_utm': 'utm_source%3DBaidu%26utm_medium%3Dorganic',
-    '_lxsdk_s': '16b8d4e1403-a00-cac-706%7C%7C118'
+    '_lxsdk_cuid': '16b8d5ede3fc8-02e6c6ce1198328-70226752-13c680-16b8d5ede3f6e',
+    '_lxsdk': '16b8d5ede3fc8-02e6c6ce1198328-70226752-13c680-16b8d5ede3f6e',
+    '_hc.v': 'f134a75b-e4c8-bc9a-fef8-5a204c0a1d0b.1561444934',
+    '_lxsdk_s': '16b92c99bb7-bb-a2b-591%7C%7C79'
+}
+
+# chrom的cookie
+def_cookie = {
+    's_ViewType': '10',
+    '_lxsdk_cuid': '16b9170d664c8-08638a5d100908-3f72045a-13c680-16b9170d664bb',
+    '_lxsdk': '16b9170d664c8-08638a5d100908-3f72045a-13c680-16b9170d664bb',
+    '_hc.v': 'c5894a62-bebd-65c3-1e63-485d6b1c4eb8.1561513220',
+    '_lxsdk_s': '16b92c46963-99f-700-931%7C%7C136'
 }
 
 is_test = False
 # 每种类型最多几页d
-max_type_page = 10
+max_type_page = 50
 
 
 class GetTypesSpider(scrapy.Spider):

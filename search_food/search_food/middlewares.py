@@ -4,6 +4,7 @@
 #
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+import random
 
 from scrapy import signals
 
@@ -101,3 +102,40 @@ class SearchFoodDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class ProxyMiddleware(object):
+    """
+    设置Proxy
+    """
+
+    def __init__(self, ip):
+        self.ip = ip
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(ip=crawler.settings.get('PROXIES'))
+
+    def process_request(self, request, spider):
+        ip = "http://" + random.choice(self.ip)
+        if len(ip) < 10:
+            return
+        print("this is request ip:%s , url : %s" % (ip, request.url))
+        # request.meta['proxy'] = ip
+
+    def process_response(self, request, response, spider):
+        """
+        对返回的response处理
+        :param request:
+        :param response:
+        :param spider:
+        :return:
+        """
+        # 如果返回的response状态不是200，重新生成当前request对象
+        if response.status != 200:
+            print("请求结果 : " + response.status)
+            ip = "http://" + random.choice(self.ip)
+            print("re request ip: %s,url : %s" % (ip, response.url))
+            request.meta['proxy'] = ip
+            return request
+        return response
