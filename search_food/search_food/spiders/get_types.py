@@ -11,6 +11,7 @@ from search_food.items import DbTypeItem, DbTypeCityItem
 
 uas = ['Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0',
+       'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36 OPR/60.0.3255.170',
        'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.163 Safari/535.1',
        'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:6.0) Gecko/20100101 Firefox/6.0',
        'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50',
@@ -27,35 +28,18 @@ uas = ['Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) C
        ]
 
 def_headers = {
-    'Host': 'www.dianping.com',
+    # 'Host': 'www.dianping.com',
     # 'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0',
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    'Accept-Language': 'en-US,en;q=0.5',
-    'Accept-Encoding': 'gzip, deflate',
-    'Connection': 'keep-alive',
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36 OPR/60.0.3255.170',
+    # 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    # 'Accept-Language': 'en-US,en;q=0.5',
+    # 'Accept-Encoding': 'gzip, deflate',
+    # 'Connection': 'keep-alive',
     # 'Cookie': '__mta=142037261.1560844813116.1560844813116.1560844813116.1; cy=5; cye=nanjing; _lxsdk_cuid=16b1afa8f30c8-0d5154320b3f228-70226752-13c680-16b1afa8f31c8; _lxsdk=16b1afa8f30c8-0d5154320b3f228-70226752-13c680-16b1afa8f31c8; _hc.v=d2bf0bc8-ef22-e77a-8572-7fdd38678f60.1559525758; s_ViewType=10; hibext_instdsigdipv2=1; aburl=1; _lx_utm=utm_source%3DBaidu%26utm_medium%3Dorganic; _lxsdk_s=16b8c61cc3a-668-fd3-248%7C%7C122',
-    'Upgrade-Insecure-Requests': '1',
+    # 'Upgrade-Insecure-Requests': '1',
     # 'If-Modified-Since': 'Tue, 25 Jun 2019 02:05:48 GMT',
     # 'If-None-Match': '62bbb6c1a987e5ba38c537d1f798c1c9',
-    'Cache-Control': 'max-age=0'
-}
-
-def_cookie = {
-    's_ViewType': '10',
-    '_lxsdk_cuid': '16b8d5ede3fc8-02e6c6ce1198328-70226752-13c680-16b8d5ede3f6e',
-    '_lxsdk': '16b8d5ede3fc8-02e6c6ce1198328-70226752-13c680-16b8d5ede3f6e',
-    '_hc.v': 'f134a75b-e4c8-bc9a-fef8-5a204c0a1d0b.1561444934',
-    '_lxsdk_s': '16b92c99bb7-bb-a2b-591%7C%7C79'
-}
-
-# chrom的cookie
-def_cookie = {
-    's_ViewType': '10',
-    '_lxsdk_cuid': '16b9170d664c8-08638a5d100908-3f72045a-13c680-16b9170d664bb',
-    '_lxsdk': '16b9170d664c8-08638a5d100908-3f72045a-13c680-16b9170d664bb',
-    '_hc.v': 'c5894a62-bebd-65c3-1e63-485d6b1c4eb8.1561513220',
-    '_lxsdk_s': '16b92c46963-99f-700-931%7C%7C136'
+    # 'Cache-Control': 'max-age=0'
 }
 
 is_test = False

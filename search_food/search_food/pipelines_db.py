@@ -11,7 +11,7 @@ import time
 import openpyxl
 from openpyxl import Workbook
 
-from get_types import get_shops
+from run_dzdp import get_shops
 from search_food.items import ShopItem, TypeItem, DbTypeItem
 import os
 

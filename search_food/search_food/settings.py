@@ -56,7 +56,7 @@ ROBOTSTXT_OBEY = False
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     # 'search_food.middlewares.SearchFoodDownloaderMiddleware': 543,
-    'search_food.middlewares.ProxyMiddleware': 543,  # IP代理
+    # 'search_food.middlewares.ProxyMiddleware': 543,  # IP代理
 }
 
 # Enable or disable extensions
@@ -101,7 +101,7 @@ ITEM_PIPELINES = {
 
 # USER_AGENT = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0"
 
-HTTPERROR_ALLOWED_CODES = [304, 403]
+HTTPERROR_ALLOWED_CODES = [304, 403, 404, 302]
 # HTTPERROR_ALLOWED_CODES = list(range(0, 999))
 # print(HTTPERROR_ALLOWED_CODES)
 
@@ -119,53 +119,18 @@ fh.setFormatter(formatter)
 # 使用StreamHandler输出到屏幕
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
-ch.setFormatter(formatter)
+# ch.setFormatter(formatter)
 
 # 添加两个Handler
 logger.addHandler(ch)
 logger.addHandler(fh)
 
 # 代理IP
-PROXIES = ['125.73.220.18:49128',
-           '124.202.166.171:82',
-           '60.217.158.163:8060',
-           '218.60.8.83:3129',
-           '183.3.221.10:3128',
-           '210.34.24.103:3128',
-           '182.92.105.136:3128',
-           '111.13.134.22:80',
-           '115.239.248.181:3128',
-           '117.127.0.202:8080',
-           '39.137.77.66:80',
-           '119.41.236.180:8010',
-           '39.137.77.68:8080',
-           '114.55.92.9:9999',
-           '101.37.118.54:8888',
-           '101.251.216.103:8080',
-           '39.137.107.98:80',
-           '111.77.101.152:8118',
-           '114.115.214.122:8080',
-           '114.115.200.87:8080',
-           '119.180.143.207:8060',
-           '47.94.213.22:8888',
-           '112.84.178.21:8888',
-           '120.79.161.204:80',
-           '202.112.51.51:8082',
-           '120.234.63.196:3128',
-           '120.210.219.74:8080',
-           '124.250.26.129:8080',
-           '218.60.8.98:3129',
-           '39.135.24.11:80',
-           '175.10.24.82:3128',
-           '101.231.104.82:80',
-           '210.22.5.117:3128',
-           '27.208.91.251:8060',
-           '106.2.238.2:3128',
-           '117.127.16.208:8080',
-           '119.122.214.127:9000',
-           '112.246.235.69:8060',
-           '221.4.172.162:3128',
-           '120.79.147.254:9000',
-           '101.16.240.179:8080',
-           '117.191.11.74:80'
-           ]
+PROXIES = []
+
+# 超时
+DOWNLOAD_TIMEOUT = 15
+
+ROBOTSTXT_OBEY = False
+#禁止重定向
+REDIRECT_ENABLED = False
