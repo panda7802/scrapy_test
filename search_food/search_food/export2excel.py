@@ -1,5 +1,7 @@
+import datetime
 import os
 import sys
+import time
 
 import django
 import openpyxl
@@ -14,7 +16,11 @@ os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 print("===========setting over===========")
 django.setup()
 
-from dzdp.models import DzdpType
+from dzdp.models import DzdpType, DzdpShop
+
+file_full_dir = "./res_dir"
+file_full_path = file_full_dir + "/shops.xlsx"
+file_full_path_bak = file_full_dir + "/shops_bak.xlsx"
 
 
 def export_types(wb):
@@ -24,7 +30,8 @@ def export_types(wb):
     """
     types = DzdpType.objects.filter(parent_type_id=1).all()
     for item in types:
-        wb.create_sheet(item.name)
+        ws = wb.create_sheet(item.name)
+        ws.append(['店名', '价格', '电话', '图片数', '好评', '中评', '差评', '好评率', '链接'])  # 加入一行数据
 
 
 def export_shops_by_type(wb, type_name):
@@ -32,13 +39,31 @@ def export_shops_by_type(wb, type_name):
     导出商店
     :return:
     """
-    pass
+    shops = DzdpShop.objects.filter(type__name=type_name).all()
+    count = len(shops)
+    for index, shop in enumerate(shops):
+        # if index > 10:
+        #     break
+        all_commons = shop.good + shop.common + shop.bad
+        hpl = -1
+        if all_commons != 0:
+            hpl = float(shop.good) / all_commons
+        line = [shop.name, shop.price, shop.phone, shop.pic, shop.good, shop.common,
+                shop.bad, hpl, shop.url]
+        ws = wb.get_sheet_by_name(type_name)
+        ws.append(line)
+        name_cell = "A%d" % ws.max_row
+        ws[name_cell].hyperlink = shop.url
+        print("%s -- %s , %s : %d/%d" % (time.strftime("%H:%M.%S"), type_name, shop.name, index + 1, count))
+        if index % 10 == 0:
+            wb.save(file_full_path)  # 保存文件
+            if index % 100 == 0:
+                wb.save(file_full_path_bak)  # 保存文件
+        wb.save("%s/%s.xlsx" % (file_full_dir, type_name))
 
 
 if __name__ == '__main__':
     print("-------start export---------")
-    file_full_dir = "./res_dir"
-    file_full_path = file_full_dir + "/shops.xlsx"
     # obj_file = open(file_full_path)
     # if obj_file is not None:
     #     delete()
@@ -57,4 +82,11 @@ if __name__ == '__main__':
 
     def_sheet = wb.get_sheet_by_name('Sheet')
     wb.remove(def_sheet)
-    wb.save(file_full_path)
+
+    # 根据类型保持内容
+    types = DzdpType.objects.filter(parent_type_id=1).all()
+    for index, item in enumerate(types):
+        # if index > 5:
+        #     break
+        export_shops_by_type(wb, item.name)
+        wb.save(file_full_path)

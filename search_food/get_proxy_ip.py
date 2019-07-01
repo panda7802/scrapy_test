@@ -19,8 +19,10 @@ def getDL(page):
     res = urllib2.urlopen(req)
     html = str(res.read())
 
+    # srclist = re.findall(
+    #     r'<tr class=(.|\n)*?<td>(\d+\.\d+\.\d+\.\d+)</td>(.|\n)*?<td>(\d+)</td>(.|\n)*?<td>(HTTP|HTTPS)</td>', html)
     srclist = re.findall(
-        r'<tr class=(.|\n)*?<td>(\d+\.\d+\.\d+\.\d+)</td>(.|\n)*?<td>(\d+)</td>(.|\n)*?<td>(HTTP|HTTPS)</td>', html)
+        r'<tr class=(.|\n)*?<td>(\d+\.\d+\.\d+\.\d+)</td>(.|\n)*?<td>(\d+)</td>(.|\n)*?<td>(HTTPS)</td>', html)
     xlist = []
     for item in srclist:
         xlist.append((item[5], item[1], item[3]))
@@ -29,12 +31,12 @@ def getDL(page):
 
 def testDL(ipstr):
     print("%s:%s" % (ipstr[1], ipstr[2]))
-    proxy = urllib2.ProxyHandler({'http': "{}:{}".format(ipstr[1], ipstr[2])})
+    proxy = urllib2.ProxyHandler({'https': "{}:{}".format(ipstr[1], ipstr[2])})
     opener = urllib2.build_opener(proxy)
     urllib2.install_opener(opener)
 
     try:
-        test_url = 'http://httpbin.org/ip'
+        test_url = 'https://httpbin.org/ip'
         # testUrl = 'http://2017.ip138.com/ic.asp'
         req = urllib2.Request(test_url)
         res = urllib2.urlopen(req, timeout=10).read()

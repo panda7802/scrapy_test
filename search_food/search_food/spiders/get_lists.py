@@ -9,7 +9,7 @@ import scrapy
 from django.db.models import Q
 from scrapy import Request
 
-from dzdp.models import DzdpCity, DzdpType, DzdpCityType, DzdpShop
+from dzdp.models import DzdpCity, DzdpType, DzdpCityType, DzdpShop, DzdpShopType
 from search_food.items import ShopItem, TypeItem, DbShopItem
 from search_food.spiders import get_types
 
@@ -47,12 +47,13 @@ class GetListSpider(scrapy.Spider):
         for index, item in enumerate(city_types):
             # if index > 1:
             #     break
-            curr_page = 0  # item.curr_page
+            curr_page = item.curr_page
             if curr_page < 1:
                 curr_page = 1
             url = get_type_url(item.city.tag, item.type.parent_type.tag, item.type.tag, curr_page)
             print(url)
-            yield Request(url, headers=get_types.def_headers, meta={'city_type': item, 'page_index': curr_page})
+            yield Request(url, headers=get_types.def_headers, meta={'city_type': item, 'page_index': curr_page},
+                          dont_filter=True)
 
     def parse(self, response):
         """
@@ -101,6 +102,19 @@ class GetListSpider(scrapy.Spider):
                 except Exception:
                     traceback.print_exc()
                     logging.error(traceback.format_exc())
+
+            # 存商店类型
+            shop_item = DzdpShop.objects.filter(shop_id=shop_id).first()
+            shop_type = DzdpShopType.objects.filter(Q(shop__id=shop_item.id) \
+                                                    & Q(type__id=city_type.type.id)).first()
+            if shop_type is None:
+                try:
+                    shop_type = DzdpShopType()
+                    shop_type.shop = shop_item
+                    shop_type.type = city_type.type
+                    shop_type.save()
+                except Exception:
+                    traceback.print_exc()
 
             # 获取详情
             # yield Request(href, headers=self.def_headers, callback=self.parse_detail,
