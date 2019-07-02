@@ -44,15 +44,26 @@ class GetListSpider(scrapy.Spider):
             filter(Q(city__in=need_get_cities) \
                    & Q(type__parent_type__in=need_get_types) \
                    & Q(is_max_page=False))
+        s = "_lxsdk_cuid=16b9ce320fcc8-0772433cd24777-3f72045a-13c680-16b9ce320fcc8; _lxsdk=16b9ce320fcc8-0772433cd24777-3f72045a-13c680-16b9ce320fcc8; _hc.v=d9be32d5-e47a-a619-1857-d09b928d6f85.1561705259; s_ViewType=10; _lxsdk_s=16bb0bd7722-1a1-adc-6b0%7C%7C105"
+        def_cookie = {}
+        for item in s.split(";"):
+            if item is None:
+                continue
+            if len(item.strip()) > 3:
+                def_cookie[item.split("=")[0].strip()] = item.split("=")[1].strip()
+
         for index, item in enumerate(city_types):
             # if index > 1:
             #     break
             curr_page = item.curr_page
             if curr_page < 1:
                 curr_page = 1
+            cookie = def_cookie
+            cookie['_lxsdk_s'] = "16bb0bd7722-1a1-adc-6b0%%7C%%7C%d" % (index / 10 + 100)
             url = get_type_url(item.city.tag, item.type.parent_type.tag, item.type.tag, curr_page)
             print(url)
-            yield Request(url, headers=get_types.def_headers, meta={'city_type': item, 'page_index': curr_page},
+            yield Request(url, headers=get_types.def_headers, cookies=cookie,
+                          meta={'city_type': item, 'page_index': curr_page},
                           dont_filter=True)
 
     def parse(self, response):
@@ -62,7 +73,7 @@ class GetListSpider(scrapy.Spider):
         :return:
         """
         if response.status != 200:
-            logging.debug("get err ,url : " + response.url)
+            logging.debug("get err %d ,url : %s" % (response.status, response.url))
             return
 
         # 本类型第几页

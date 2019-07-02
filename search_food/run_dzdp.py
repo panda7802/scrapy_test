@@ -59,5 +59,5 @@ if __name__ == '__main__':
     django.setup()
 
     # get_types()
-    get_lists()
-    # get_shops()
+    # get_lists()
+    get_shops()

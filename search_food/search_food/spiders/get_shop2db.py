@@ -70,7 +70,7 @@ class GetShopInfoSpider(scrapy.Spider):
                 cookie = def_cookie
                 # 凭借多年的开发经验判断的
                 # cookie['_lxsdk_s'] = '16b9bd099a3-5ea-439-50e%%7C%%7C%d' % (index / 10 + 30)
-                cookie['_lxsdk_s'] = "16b9d1402db-5f4-10-9d1%%7C%%7C%d" % (index / 10 + 100)
+                cookie['_lxsdk_s'] = "16bb1465863-7b0-379-da8%%7C%%7C%d" % (index / 10 + 100)
                 # print(cookie)
                 yield Request(shop.url, headers=head, cookies=cookie, \
                               meta={'shop': shop}, dont_filter=True)

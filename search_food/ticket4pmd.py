@@ -1,5 +1,7 @@
 import _thread
+import os
 import random
+import signal
 import threading
 import time
 import traceback
@@ -24,15 +26,20 @@ uas = ['Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) C
        'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0'
        ]
 
-proxies = ['58.17.125.215:53281',
-           '123.115.114.132:9000',
+proxies = ['124.232.133.199:3128',
+           '210.26.49.88:3128',
+           '110.172.221.241:8080',
+           '58.249.55.222:9797',
+           '221.4.150.7:8181',
+           '101.231.234.38:8080',
+           '211.162.70.229:3128',
+           '113.116.121.77:9000',
+           '123.131.86.242:1080',
            '14.115.107.63:9797',
-           '218.64.69.79:8080',
-           '60.211.218.78:53281',
-           '113.247.252.114:9090',
+           '124.207.82.166:8008',
+           '121.69.46.177:9000',
            '120.26.208.102:88',
-           '121.15.254.156:888',
-           '118.187.58.35:53281'
+           '121.15.254.156:888'
            ]
 
 # global success
@@ -54,8 +61,8 @@ def post_ticket():
     # ip = {'http': 'http://%s" % random.choice(proxies)'}
     # ip = {'http': 'http://%s' % random.choice(proxies)}
     max = 10000
+    obj_ticket = 2746
     global success
-    # success = 0
     # proxies = []#直接灌,不进行代理
     for index in list(range(0, max)):
         tmp = ''
@@ -79,10 +86,14 @@ def post_ticket():
                 success += 1
                 # success = success + 1
                 print("投票成功:%s ,  %d/%d %s" % (tmp, success, max, threading.current_thread().name))
+                if success >= obj_ticket:
+                    print("-----投票完成 , 一共%d票------" % obj_ticket)
+                    os.kill(os.getpid(), signal.SIGKILL)
+                    return
             else:
                 print("投票失败")
                 print(text)
-            # time.sleep(random.random())
+            time.sleep(random.random() * 10)
         except:
             try:
                 print("投票异常 %s , %s" % (tmp, threading.current_thread().name))

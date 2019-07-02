@@ -15,6 +15,7 @@ def getDL(page):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
     }
 
+    print("url : %s" % url)
     req = urllib2.Request(url, headers=header)
     res = urllib2.urlopen(req)
     html = str(res.read())
