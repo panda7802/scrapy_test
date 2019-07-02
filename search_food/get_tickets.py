@@ -44,4 +44,4 @@ if __name__ == "__main__":
 
     print("目前排名:")
     for index, item in enumerate(res):
-        print("%d . %s : %d" % (index + 1, item[0], item[1]))
+        print("%d.\t%s: %d" % (index + 1, item[0], item[1]))

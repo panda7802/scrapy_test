@@ -60,8 +60,8 @@ def post_ticket():
 
     # ip = {'http': 'http://%s" % random.choice(proxies)'}
     # ip = {'http': 'http://%s' % random.choice(proxies)}
-    max = 10000
-    obj_ticket = 2746
+    max = 10000000
+    obj_ticket = 70000
     global success
     # proxies = []#直接灌,不进行代理
     for index in list(range(0, max)):
@@ -93,7 +93,7 @@ def post_ticket():
             else:
                 print("投票失败")
                 print(text)
-            time.sleep(random.random() * 10)
+            time.sleep(random.random() * 2)
         except:
             try:
                 print("投票异常 %s , %s" % (tmp, threading.current_thread().name))
@@ -122,7 +122,7 @@ if __name__ == "__main__":
     try:
         # thread1 = threading(target=post_ticket(), name="thread1")
         # thread2 = threading.Thread(target=post_ticket(), name="thread2")
-        for i in list(range(0, 10)):
+        for i in list(range(0, 30)):
             # thread_name = 't' % i
             thread1 = TicketThread('t%s' % i)
             thread1.start()
