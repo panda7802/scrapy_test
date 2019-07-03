@@ -40,7 +40,7 @@ def testDL(ipstr):
         test_url = 'https://httpbin.org/ip'
         # testUrl = 'http://2017.ip138.com/ic.asp'
         req = urllib2.Request(test_url)
-        res = urllib2.urlopen(req, timeout=10).read()
+        res = urllib2.urlopen(req, timeout=4).read()
         print("********************* √ {}    -- {}".format(ipstr, res))
 
         with open("ok.txt", "a") as f:

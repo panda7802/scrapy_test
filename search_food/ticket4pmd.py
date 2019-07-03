@@ -26,18 +26,16 @@ uas = ['Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) C
        'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0'
        ]
 
-proxies = ['124.232.133.199:3128',
+proxies = ['113.247.252.114:9090',
+           '58.240.220.86:53281',
+           '163.125.69.146:8888',
+           '121.79.131.58:8080',
+           '114.249.118.244:9000',
            '210.26.49.88:3128',
            '110.172.221.241:8080',
            '58.249.55.222:9797',
-           '221.4.150.7:8181',
-           '101.231.234.38:8080',
-           '211.162.70.229:3128',
-           '113.116.121.77:9000',
-           '123.131.86.242:1080',
-           '14.115.107.63:9797',
-           '124.207.82.166:8008',
-           '121.69.46.177:9000',
+           '58.17.125.215:53281',
+           '115.171.152.19:9000',
            '120.26.208.102:88',
            '121.15.254.156:888'
            ]
@@ -61,7 +59,7 @@ def post_ticket():
     # ip = {'http': 'http://%s" % random.choice(proxies)'}
     # ip = {'http': 'http://%s' % random.choice(proxies)}
     max = 10000000
-    obj_ticket = 70000
+    obj_ticket = 12345
     global success
     # proxies = []#直接灌,不进行代理
     for index in list(range(0, max)):
@@ -76,7 +74,7 @@ def post_ticket():
                 tmp = random.choice(proxies)
                 sip = 'http://%s' % tmp
                 ip = {'http': sip, 'https': sip}
-                resp = requests.post(url, data=parms, headers=headers, proxies=ip, timeout=3)  # POST请求
+                resp = requests.post(url, data=parms, headers=headers, proxies=ip, timeout=2)  # POST请求
             else:
                 resp = requests.post(url, data=parms, headers=headers, timeout=1)  # POST请求
 
@@ -85,23 +83,22 @@ def post_ticket():
             if text.__contains__("投票成功"):
                 success += 1
                 # success = success + 1
-                print("投票成功:%s ,  %d/%d %s" % (tmp, success, max, threading.current_thread().name))
+                print("投票成功:%d/%d \t %s,\t%s\t" % (success, obj_ticket, tmp, threading.current_thread().name))
                 if success >= obj_ticket:
                     print("-----投票完成 , 一共%d票------" % obj_ticket)
                     os.kill(os.getpid(), signal.SIGKILL)
                     return
             else:
-                print("投票失败")
+                print("投票失败 %s " % tmp)
                 print(text)
-            time.sleep(random.random() * 2)
+            time.sleep(0.5 + random.random())
         except:
             try:
-                print("投票异常 %s , %s" % (tmp, threading.current_thread().name))
-                # traceback.print_exc()
-                # if tmp in proxies:
-                #     proxies.remove(tmp)
+                # print("投票异常 %s , %s" % (tmp, threading.current_thread().name))
+                time.sleep(0.5)
             except:
                 traceback.print_exc()
+
     print("投票成功%d次" % success)
 
 
@@ -117,20 +114,11 @@ class TicketThread(threading.Thread):
 
 
 if __name__ == "__main__":
-    # post_ticket()
-    # 创建两个线程
+    # 创建多个线程
     try:
-        # thread1 = threading(target=post_ticket(), name="thread1")
-        # thread2 = threading.Thread(target=post_ticket(), name="thread2")
         for i in list(range(0, 30)):
-            # thread_name = 't' % i
-            thread1 = TicketThread('t%s' % i)
+            thread1 = TicketThread('t%s' % (i + 1))
             thread1.start()
-            # thread2 = TicketThread("t2")
-            # thread2.start()
-        # _thread.start_new_thread(post_ticket())
-        # _thread.start_new_thread(post_ticket())
-        # post_ticket()
         while 1:
             time.sleep(1)
             pass
