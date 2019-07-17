@@ -1,6 +1,15 @@
+import os
 import re
 import time
 import urllib.request as urllib2
+
+file_full_dir = "/home/pangt/res_dir"
+obj_path = file_full_dir + "/res.txt"
+if not os.path.exists(obj_path):
+    if not os.path.exists(file_full_dir):
+        os.makedirs(file_full_dir)
+
+f = open(obj_path, "w+")
 
 
 def get_ticket_by_city(city_id, city_name, all_res):
@@ -40,21 +49,33 @@ def get_ticket_by_city(city_id, city_name, all_res):
 
     res.sort(key=lambda x: x[1], reverse=True)
 
-    for index, item in enumerate(res):
-        print("%d.\t%s: %d" % (index + 1, item[0], item[1]))
+    if city_name == "南京":
+        for index, item in enumerate(res):
+            f.write("%d.\t%s: %d\n" % (index + 1, item[0], item[1]))
+            print("%d.\t%s: %d" % (index + 1, item[0], item[1]))
+        else:
+            f.write("不关心\n")
+            print("不关心")
 
 
 if __name__ == "__main__":
     city_ids = {"石家庄": 30, "贵阳": 29, "郑州": 28, "长沙": 27, "南京": 26, "泉州": 25,
                 "太原": 20, "呼和浩特": 17, "北京": 16, "哈尔滨": 15}
+
+    f.write("%s排名: \n" % (time.strftime("%H:%M:%S")))
     print("%s排名: " % (time.strftime("%H:%M:%S")))
     all_res = []
     for city_name in city_ids:
-        print(city_name)
+        f.write("--------%s--------\n" % city_name)
+        print("--------%s--------" % city_name)
         get_ticket_by_city(city_ids[city_name], city_name, all_res)
 
-    print("----放眼全国---")
+    f.write("----------------放眼全国---------------\n")
+    print("----------------放眼全国---------------")
     all_res.sort(key=lambda x: x[1], reverse=True)
 
     for index, item in enumerate(all_res):
+        f.write("%d.\t%s: %d\n" % (index + 1, item[0], item[1]))
         print("%d.\t%s: %d" % (index + 1, item[0], item[1]))
+
+    f.close()

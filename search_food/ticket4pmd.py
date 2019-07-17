@@ -26,18 +26,17 @@ uas = ['Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) C
        'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0'
        ]
 
-proxies = ['113.247.252.114:9090',
-           '58.240.220.86:53281',
-           '163.125.69.146:8888',
-           '121.79.131.58:8080',
-           '114.249.118.244:9000',
+proxies = ['119.123.179.163:9000',
+           '58.243.50.184:53281',
+           '183.63.114.204:54321',
+           '123.249.28.188:3128',
+           '211.101.154.105:43598',
+           '125.46.0.62:53281',
+           '116.252.39.176:53281',
            '210.26.49.88:3128',
            '110.172.221.241:8080',
-           '58.249.55.222:9797',
-           '58.17.125.215:53281',
-           '115.171.152.19:9000',
-           '120.26.208.102:88',
-           '121.15.254.156:888'
+           '121.69.46.177:9000',
+           '120.26.208.102:88'
            ]
 
 # global success
@@ -59,7 +58,7 @@ def post_ticket():
     # ip = {'http': 'http://%s" % random.choice(proxies)'}
     # ip = {'http': 'http://%s' % random.choice(proxies)}
     max = 10000000
-    obj_ticket = 12345
+    obj_ticket = 165
     global success
     # proxies = []#直接灌,不进行代理
     for index in list(range(0, max)):
@@ -116,7 +115,7 @@ class TicketThread(threading.Thread):
 if __name__ == "__main__":
     # 创建多个线程
     try:
-        for i in list(range(0, 30)):
+        for i in list(range(0, 28)):
             thread1 = TicketThread('t%s' % (i + 1))
             thread1.start()
         while 1:

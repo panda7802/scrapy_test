@@ -86,13 +86,13 @@ if __name__ == '__main__':
         os.remove(file_full_path)
 
     wb = Workbook()  # class实例化
-
-    # 导出类型
-    export_types(wb)
-
-    def_sheet = wb.get_sheet_by_name('Sheet')
-    wb.remove(def_sheet)
-    wb.save(file_full_path)  # 保存文件
+    #
+    # # 导出类型
+    # export_types(wb)
+    #
+    # def_sheet = wb.get_sheet_by_name('Sheet')
+    # wb.remove(def_sheet)
+    # wb.save(file_full_path)  # 保存文件
 
     # 根据类型保持内容
     types = DzdpType.objects.filter(parent_type_id=1).all()

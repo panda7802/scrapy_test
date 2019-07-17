@@ -10,7 +10,7 @@ import scrapy
 from scrapy import Request
 
 from dzdp.models import DzdpShop
-from search_food.spiders import get_types
+from search_food.spiders import get_types, value
 
 
 # def_cookie = {
@@ -34,10 +34,7 @@ from search_food.spiders import get_types
 class GetShopInfoSpider(scrapy.Spider):
     name = 'get_shop2db'
     allowed_domains = ['dianping.com']
-    start_urls = ['http://www.dianping.com/shop/97475643/']
-
-    D_NUM = {u'\uf70d': "3", u'\uf404': "5", u'\uec2d': "0", u'\uf810': "8", u'\ue4ff': "2",
-             u'\ue6ec': "4", u'\ue27b': "9", u'\ue284': "7", u'\ue65d': "7"}
+    start_urls = ['http://www.dianping.com/shop/38052931']
 
     cookies = []
 
@@ -45,10 +42,7 @@ class GetShopInfoSpider(scrapy.Spider):
     have_re = False
 
     def start_requests(self):
-        s = "_lxsdk_s=16b97dc5e21-e3d-4a2-5f1%7C%7C1"
-        # s = "_lxsdk_s=16b97dd2f21-379-52-1cd%7C%7C1"
-        # s = "_lxsdk_cuid=16b983f2ed2c8-0e0d047a2ec123-3f72045a-13c680-16b983f2ed2c8; _lxsdk=16b983f2ed2c8-0e0d047a2ec123-3f72045a-13c680-16b983f2ed2c8; _hc.v=e3704ee1-d39a-a68f-34ad-53348b86d271.1561627407; _lxsdk_s=16b983f2e01-596-a7b-c3b%7C%7C36"
-        # s = "_lxsdk_cuid=16b983f2ed2c8-0e0d047a2ec123-3f72045a-13c680-16b983f2ed2c8; _lxsdk=16b983f2ed2c8-0e0d047a2ec123-3f72045a-13c680-16b983f2ed2c8; _hc.v=e3704ee1-d39a-a68f-34ad-53348b86d271.1561627407; _lxsdk_s=16b983f2e01-596-a7b-c3b%7C%7C52"
+        s = "_lxsdk_s=16bcf7c7846-6de-e68-10f%7C%7C21"
         def_cookie = {}
         for item in s.split(";"):
             if item is None:
@@ -57,7 +51,8 @@ class GetShopInfoSpider(scrapy.Spider):
                 def_cookie[item.split("=")[0].strip()] = item.split("=")[1].strip()
 
         # shops = DzdpShop.objects.filter(pic__lt=0).all()
-        shops = DzdpShop.objects.filter(pic=-1).all()
+        # shops = DzdpShop.objects.filter(pic=-1).all()
+        shops = DzdpShop.objects.order_by('-lastGetTime').all()[:200]
         for index, shop in enumerate(shops):
             # if index > 0:
             #     break
@@ -69,11 +64,12 @@ class GetShopInfoSpider(scrapy.Spider):
                 # 设置cookie
                 cookie = def_cookie
                 # 凭借多年的开发经验判断的
-                # cookie['_lxsdk_s'] = '16b9bd099a3-5ea-439-50e%%7C%%7C%d' % (index / 10 + 30)
-                cookie['_lxsdk_s'] = "16bb1465863-7b0-379-da8%%7C%%7C%d" % (index / 10 + 100)
-                # print(cookie)
+                cookie['_lxsdk_s'] = "16bfeb03934-c5e-f83-8a0%%7C%%7C%d" % (index / 10 + 100)
                 yield Request(shop.url, headers=head, cookies=cookie, \
                               meta={'shop': shop}, dont_filter=True)
+                # yield Request(shop.url, headers={'User-Agent': random.choice(get_types.uas)},
+                #               meta={'shop': shop}, dont_filter=True)
+
                 # 伪造每次间隔时间不同
                 if self.have_re:
                     time.sleep(random.random() * 10)
@@ -118,8 +114,8 @@ class GetShopInfoSpider(scrapy.Spider):
             price_items = response.xpath('//*[@id="avgPriceTitle"]//text()').extract()
             s_price = ""
             for i, item in enumerate(price_items):
-                if item in self.D_NUM:
-                    s_price += self.D_NUM[item]
+                if item in value.D_NUM:
+                    s_price += value.D_NUM[item]
                 else:
                     s_price += item
 
@@ -129,8 +125,8 @@ class GetShopInfoSpider(scrapy.Spider):
             phone_items = response.xpath('//*[@class="expand-info tel"]//text()').extract()
             phone = ""
             for i, item in enumerate(phone_items):
-                if item in self.D_NUM:
-                    phone += self.D_NUM[item]
+                if item in value.D_NUM:
+                    phone += value.D_NUM[item]
                 else:
                     phone += item
 
@@ -171,11 +167,13 @@ class GetShopInfoSpider(scrapy.Spider):
             if re.match("\d+(\.\d+)?", s_price) is None:
                 shop.price = 0
             else:
+                print("url : %s , s_price : %s " % (response.url, s_price))
                 shop.price = float(s_price)
             shop.bad = int(bad.replace(")", "").replace("(", ""))
             shop.good = int(good.replace(")", "").replace("(", ""))
             shop.common = int(common.replace(")", "").replace("(", ""))
             shop.phone = phone
+            # int(phone)
             logging.debug("准备存 : %s " % str(shop))
             shop.save()
         except:

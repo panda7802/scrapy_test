@@ -20,10 +20,10 @@ def getDL(page):
     res = urllib2.urlopen(req)
     html = str(res.read())
 
-    # srclist = re.findall(
-    #     r'<tr class=(.|\n)*?<td>(\d+\.\d+\.\d+\.\d+)</td>(.|\n)*?<td>(\d+)</td>(.|\n)*?<td>(HTTP|HTTPS)</td>', html)
     srclist = re.findall(
-        r'<tr class=(.|\n)*?<td>(\d+\.\d+\.\d+\.\d+)</td>(.|\n)*?<td>(\d+)</td>(.|\n)*?<td>(HTTPS)</td>', html)
+        r'<tr class=(.|\n)*?<td>(\d+\.\d+\.\d+\.\d+)</td>(.|\n)*?<td>(\d+)</td>(.|\n)*?<td>(HTTP|HTTPS)</td>', html)
+    # srclist = re.findall(
+    #     r'<tr class=(.|\n)*?<td>(\d+\.\d+\.\d+\.\d+)</td>(.|\n)*?<td>(\d+)</td>(.|\n)*?<td>(HTTPS)</td>', html)
     xlist = []
     for item in srclist:
         xlist.append((item[5], item[1], item[3]))

@@ -11,6 +11,7 @@ import scrapy
 from scrapy import Request
 
 from search_food.items import ShopItem
+from search_food.spiders import value
 
 
 class GetShopInfoSpider(scrapy.Spider):
@@ -18,8 +19,8 @@ class GetShopInfoSpider(scrapy.Spider):
     allowed_domains = ['dianping.com']
     start_urls = ['http://www.dianping.com/shop/97475643/']
 
-    D_NUM = {u'\uf70d': "3", u'\uf404': "5", u'\uec2d': "0", u'\uf810': "8", u'\ue4ff': "2",
-             u'\ue6ec': "4", u'\ue27b': "9", u'\ue284': "7", u'\ue65d': "7"}
+    # D_NUM = {u'\uf70d': "3", u'\uf404': "5", u'\uec2d': "0", u'\uf810': "8", u'\ue4ff': "2",
+    #          u'\ue6ec': "4", u'\ue27b': "9", u'\ue284': "7", u'\ue65d': "7"}
 
     cookies = []
 
@@ -104,8 +105,8 @@ class GetShopInfoSpider(scrapy.Spider):
         price_items = response.xpath('//*[@id="avgPriceTitle"]//text()').extract()
         s_price = ""
         for i, item in enumerate(price_items):
-            if item in self.D_NUM:
-                s_price += self.D_NUM[item]
+            if item in value.D_NUM:
+                s_price += value.D_NUM[item]
             else:
                 s_price += item
 
@@ -115,8 +116,8 @@ class GetShopInfoSpider(scrapy.Spider):
         phone_items = response.xpath('//*[@class="expand-info tel"]//text()').extract()
         phone = ""
         for i, item in enumerate(phone_items):
-            if item in self.D_NUM:
-                phone += self.D_NUM[item]
+            if item in value.D_NUM:
+                phone += value.D_NUM[item]
             else:
                 phone += item
 

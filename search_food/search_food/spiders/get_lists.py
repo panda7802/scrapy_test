@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+import random
 import sys
 import time
 import traceback
@@ -62,9 +63,16 @@ class GetListSpider(scrapy.Spider):
             cookie['_lxsdk_s'] = "16bb0bd7722-1a1-adc-6b0%%7C%%7C%d" % (index / 10 + 100)
             url = get_type_url(item.city.tag, item.type.parent_type.tag, item.type.tag, curr_page)
             print(url)
-            yield Request(url, headers=get_types.def_headers, cookies=cookie,
-                          meta={'city_type': item, 'page_index': curr_page},
-                          dont_filter=True)
+            # yield Request(url, headers=get_types.def_headers, cookies=cookie,
+            #               meta={'city_type': item, 'page_index': curr_page},
+            #               dont_filter=True)
+            try:
+                yield Request(url, headers={'User-Agent': random.choice(get_types.uas)},
+                              meta={'city_type': item, 'page_index': curr_page},
+                              dont_filter=True)
+            except:
+                traceback.print_exc()
+                logging.error(traceback.format_exc())
 
     def parse(self, response):
         """
@@ -150,86 +158,11 @@ class GetListSpider(scrapy.Spider):
             city_type.save()
             # logging.debug(response.meta['type_name'] + "   下一页")
             yield Request(next_page_href,
-                          headers=get_types.def_headers,
+                          headers={'User-Agent': random.choice(get_types.uas)},
+                          # headers=get_types.def_headers,
                           meta={'city_type': city_type, 'page_index': page_index},
                           dont_filter=True)
         else:
             city_type['is_max_page'] = True
             city_type.save()
             logging.debug("-----------已经到最后一页-----------")
-
-    def parse_detail(self, response):
-        """
-        获取详情
-        :param response:
-        :return:
-        """
-        if response.status != 200:
-            logging.debug("get err ,url : " + response.url)
-            return
-
-        # 店名
-        name = response.xpath('//*[@class="shop-name"]/text()').extract_first()
-        if None is name:
-            return
-        logging.debug(name)
-
-        # # 获取坐标
-        # map_img = response.xpath('//*[@class="aside-bottom"]').extract()
-        # logging.debug(map_img)
-        #
-        # return
-
-        # 价格,注意：此处text()为俩斜杠
-        price_items = response.xpath('//*[@id="avgPriceTitle"]//text()').extract()
-        s_price = ""
-        for i, item in enumerate(price_items):
-            if item in self.D_NUM:
-                s_price += self.D_NUM[item]
-            else:
-                s_price += item
-
-        s_price = s_price.replace("人均", "").replace("元", "").replace("：", "").replace(":", "").replace(" ", "")
-
-        # 电话
-        phone_items = response.xpath('//*[@class="expand-info tel"]//text()').extract()
-        phone = ""
-        for i, item in enumerate(phone_items):
-            if item in self.D_NUM:
-                phone += self.D_NUM[item]
-            else:
-                phone += item
-
-        phone = phone.replace("电话", "").replace(":", "").replace("：", "")
-
-        # 图片
-        pic = response.xpath('//*[@class="filter-item J-filter-pic"]//span/text()').extract_first() or "0"
-        # 好评
-        good = response.xpath('//*[@class="filter-item J-filter-good"]//span/text()').extract_first() or "0"
-        # 中评
-        common = response.xpath('//*[@class="filter-item J-filter-common"]//span/text()').extract_first() or "0"
-        # 差评
-        bad = response.xpath('//*[@class="filter-item J-filter-bad"]//span/text()').extract_first() or "0"
-
-        # 存储
-        item = ShopItem()
-        item['name'] = name
-        item['pic'] = pic.replace(")", "").replace("(", "")
-        item['price'] = s_price
-        item['bad'] = bad.replace(")", "").replace("(", "")
-        item['good'] = good.replace(")", "").replace("(", "")
-        item['common'] = common.replace(")", "").replace("(", "")
-        item['type_name'] = response.meta['type_name']
-        item['phone'] = phone
-        item['url'] = response.url
-        item['row_num'] = "-1"
-
-        # logging.debug(item)
-        yield item
-
-        # TODO 地址暂不获取
-        # html, css_link = self.get_css_link(response.url)
-        # logging.debug(css_link)
-        # logging.debug(html)
-        # addr = response.xpath('//*[@id="address"]').extract()
-        # print addr

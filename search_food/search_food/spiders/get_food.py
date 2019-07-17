@@ -9,6 +9,7 @@ import scrapy
 from scrapy import Request
 
 from search_food.items import ShopItem, TypeItem
+from search_food.spiders import value
 
 reload(sys)
 # sys.setdefaultencoding('utf-8')
@@ -185,8 +186,8 @@ class GetFoodSpider(scrapy.Spider):
         price_items = response.xpath('//*[@id="avgPriceTitle"]//text()').extract()
         s_price = ""
         for i, item in enumerate(price_items):
-            if item in self.D_NUM:
-                s_price += self.D_NUM[item]
+            if item in value.D_NUM:
+                s_price += value.D_NUM[item]
             else:
                 s_price += item
 
@@ -196,8 +197,8 @@ class GetFoodSpider(scrapy.Spider):
         phone_items = response.xpath('//*[@class="expand-info tel"]//text()').extract()
         phone = ""
         for i, item in enumerate(phone_items):
-            if item in self.D_NUM:
-                phone += self.D_NUM[item]
+            if item in value.D_NUM:
+                phone += value.D_NUM[item]
             else:
                 phone += item
 
