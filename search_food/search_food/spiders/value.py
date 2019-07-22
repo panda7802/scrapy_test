@@ -5,5 +5,15 @@
 #          u'\ue728': "9", u'\uf1ec': "8", u'\uf008': "0", u'\uefaf': "7"}
 
 
-D_NUM = {u'\ue702': "2", u'\ued97': "3", u'\uec24': "6", u'\ueae2': "5", u'\uf589': "4",
-         u'\ue318': "9", u'\ue0fb': "8", u'\uf3f1': "0", u'\ue684': "7"}
+# 1\uf6e1\ueca2\ue585\uf6e11\ue2ae\ue2ae\ue197\ueca2\ue1fc \xa0 1\uf6e1\ueca21\uf6e11\uf6e1\ue197\ueca2\ueca2\ue1fc
+
+D_NUM = {u'\ue585': "0",
+         u'\uf0b9': "2",
+         u'\ueb61': "3",
+         u'\ue1fc': "4",
+         u'\uf6e1': "5",
+         u'\ue197': "6",
+         u'\ueca2': "7",
+         u'\ue2ae': "8",
+         u'\ue9e3': "9"
+         }

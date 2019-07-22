@@ -29,17 +29,16 @@ uas = ['Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) C
 
 def_headers = {
     # 'Host': 'www.dianping.com',
-    'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
+    'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.102 Safari/537.36 Vivaldi/2.6.1566.44',
     # 'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0',
-    # 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36 OPR/60.0.3255.170',
-    # 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    # 'Accept-Language': 'en-US,en;q=0.5',
+    # 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
+    # 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+    # 'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
     # 'Accept-Encoding': 'gzip, deflate',
     # 'Connection': 'keep-alive',
-    # 'Cookie': '__mta=142037261.1560844813116.1560844813116.1560844813116.1; cy=5; cye=nanjing; _lxsdk_cuid=16b1afa8f30c8-0d5154320b3f228-70226752-13c680-16b1afa8f31c8; _lxsdk=16b1afa8f30c8-0d5154320b3f228-70226752-13c680-16b1afa8f31c8; _hc.v=d2bf0bc8-ef22-e77a-8572-7fdd38678f60.1559525758; s_ViewType=10; hibext_instdsigdipv2=1; aburl=1; _lx_utm=utm_source%3DBaidu%26utm_medium%3Dorganic; _lxsdk_s=16b8c61cc3a-668-fd3-248%7C%7C122',
     # 'Upgrade-Insecure-Requests': '1',
-    # 'If-Modified-Since': 'Tue, 25 Jun 2019 02:05:48 GMT',
-    # 'If-None-Match': '62bbb6c1a987e5ba38c537d1f798c1c9',
+    # 'If-Modified-Since': 'Mon, 22 Jul 2019 05:57:03 GMT',
+    # 'If-None-Match': '964b242398161761759f6fc79607a2b0',
     # 'Cache-Control': 'max-age=0'
 }
 

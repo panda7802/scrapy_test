@@ -34,39 +34,63 @@ from search_food.spiders import get_types, value
 class GetShopInfoSpider(scrapy.Spider):
     name = 'get_shop2db'
     allowed_domains = ['dianping.com']
-    start_urls = ['http://www.dianping.com/shop/38052931']
+    start_urls = ['http://www.dianping.com/shop/3083005']
 
     cookies = []
 
     # 是否有重定向
     have_re = False
 
-    def start_requests(self):
-        s = "_lxsdk_s=16bcf7c7846-6de-e68-10f%7C%7C21"
-        def_cookie = {}
+    def_cookie = {}
+    addr_cookie = {}
+
+    def count_cookie(self, s):
+        """
+        计算cookie
+        :param s:
+        :return:
+        """
+        res = {}
         for item in s.split(";"):
             if item is None:
                 continue
             if len(item.strip()) > 3:
-                def_cookie[item.split("=")[0].strip()] = item.split("=")[1].strip()
+                res[item.split("=")[0].strip()] = item.split("=")[1].strip()
+        return res
+
+    def start_requests(self):
+        s = "_lxsdk_s=16c18827427-45e-4d9-36d%7C%7C1"
+        self.def_cookie = self.count_cookie(s)
+        s = "pvhistory=6L+U5ZuePjo8L2Vycm9yL2Vycm9yX3BhZ2U+OjwxNTYzNzg1MjU2NzMzXV9b; m_flash2=1; cityid=1"
+        self.addr_cookie = self.count_cookie(s)
 
         # shops = DzdpShop.objects.filter(pic__lt=0).all()
         # shops = DzdpShop.objects.filter(pic=-1).all()
-        shops = DzdpShop.objects.order_by('-lastGetTime').all()[:200]
+        shops = DzdpShop.objects.order_by('-lastGetTime').all()[:5]
         for index, shop in enumerate(shops):
             # if index > 0:
             #     break
+            if self.have_re:
+                break
             try:
                 head = get_types.def_headers
-                head['User-Agent'] = \
-                    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.102 Safari/537.36 Vivaldi/2.6.1566.44'
+                # head['User-Agent'] = \
+                #     'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.102 Safari/537.36 Vivaldi/2.6.1566.44'
                 # head['User-Agent'] = random.choice(get_types.uas)
                 # 设置cookie
-                cookie = def_cookie
+                cookie = self.def_cookie
                 # 凭借多年的开发经验判断的
                 cookie['_lxsdk_s'] = "16bfeb03934-c5e-f83-8a0%%7C%%7C%d" % (index / 10 + 100)
-                yield Request(shop.url, headers=head, cookies=cookie, \
+
+                # 测试用
+                # yield Request(self.start_urls[0], headers=head, cookies=cookie,
+                #               meta={'shop': shop}, dont_filter=True)
+                # return
+
+                yield Request(shop.url, headers=head, cookies=cookie,
                               meta={'shop': shop}, dont_filter=True)
+
+                # 随机ua
                 # yield Request(shop.url, headers={'User-Agent': random.choice(get_types.uas)},
                 #               meta={'shop': shop}, dont_filter=True)
 
@@ -131,7 +155,7 @@ class GetShopInfoSpider(scrapy.Spider):
                     phone += item
 
             phone = phone.replace("电话", "").replace(":", "").replace("：", "")
-
+            # int(phone)
             # 图片
             pic = response.xpath('//*[@class="filter-item J-filter-pic"]//span/text()').extract_first() or "0"
             # 好评
@@ -140,27 +164,6 @@ class GetShopInfoSpider(scrapy.Spider):
             common = response.xpath('//*[@class="filter-item J-filter-common"]//span/text()').extract_first() or "0"
             # 差评
             bad = response.xpath('//*[@class="filter-item J-filter-bad"]//span/text()').extract_first() or "0"
-
-            # # 获取地址
-            # try:
-            #     # url = "http://www.dianping.com/ajax/json/shopDynamic/shopAside?shopId=%s" % shop.shop_id
-            #     url = "http://www.dianping.com/ajax/json/shopDynamic/shopAside?shopId=113163779"
-            #     # head = {'User-Agent': random.choice(get_types.uas)}
-            #     head = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0'}
-            #     print(url)
-            #     url_request = urllib.request.Request(url=url, headers=head)
-            #     url_request_open = urllib.request.urlopen(url_request)
-            #     print(url_request_open)
-            #     # 响应状态码
-            #     print(url_request_open.status)
-            #     if url_request_open.status == 200:
-            #         # 相应原因
-            #         print(url_request_open.reason)
-            #         # 读取内容并解码
-            #         print(url_request_open.read().decode())
-            # except:
-            #     traceback.print_exc()
-            #     logging.error(traceback.format_exc())
 
             # 存储
             shop.pic = pic.replace(")", "").replace("(", "")
@@ -174,8 +177,44 @@ class GetShopInfoSpider(scrapy.Spider):
             shop.common = int(common.replace(")", "").replace("(", ""))
             shop.phone = phone
             # int(phone)
-            logging.debug("准备存 : %s " % str(shop))
-            shop.save()
+            # logging.debug("保存 : %s " % str(shop))
+            # shop.save()
+
+            # 获取地址
+            addr_url = "http://m.dianping.com/shop/%s/map" % shop.shop_id
+            print(addr_url)
+            yield Request(addr_url, headers=get_types.def_headers,
+                          cookies=self.addr_cookie,
+                          meta={'shop': shop}, dont_filter=True, callback=self.parse_addr)
         except:
             traceback.print_exc()
             logging.error(traceback.format_exc())
+
+    def parse_addr(self, response):
+        """
+        获取地址
+        :param response:
+        :return:
+        """
+        shop = response.meta['shop']
+        try:
+            print("---------addr-----------")
+            if response.status != 200:
+                self.have_re = True
+                logging.error("Get addr error , url : %s , status : %d" % (response.url, response.status))
+                return
+
+            html = response.text
+            s_pre = "address\":\""
+            addr_start_index = html.index(s_pre) + len(s_pre)
+            tmp = html[addr_start_index:]
+            addr_end_index = tmp.index("\"")
+            addr = tmp[:addr_end_index]
+            shop.addr = addr
+            print("%s : %s" % (shop.name, addr))
+        except:
+            traceback.print_exc()
+            logging.error(traceback.format_exc())
+        finally:
+            logging.debug("保存 : %s " % str(shop))
+            shop.save()
